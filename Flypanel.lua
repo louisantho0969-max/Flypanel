@@ -1,4 +1,4 @@
--- Rainbow Fly Panel + Loading Stylé - Version Complète
+-- Rainbow Fly Panel + Loading Stylé + Invisible - Version Complète
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
@@ -14,8 +14,6 @@ loadingFrame.Parent = loadingGui
 loadingFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 loadingFrame.Size = UDim2.new(0, 320, 0, 180)
 loadingFrame.Position = UDim2.new(0.5, -160, 0.5, -90)
-loadingFrame.Active = true
-loadingFrame.Draggable = false
 
 local loadingCorner = Instance.new("UICorner")
 loadingCorner.CornerRadius = UDim.new(0, 20)
@@ -45,7 +43,6 @@ loadingText.Text = "CHARGEMENT..."
 loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
 loadingText.TextScaled = true
 
--- Animation Loading
 task.spawn(function()
     while loadingGui.Parent do
         icon.Rotation = icon.Rotation + 8
@@ -80,8 +77,8 @@ mainFrame.Name = "MainFrame"
 mainFrame.Parent = screenGui
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 mainFrame.BorderSizePixel = 0
-mainFrame.Position = UDim2.new(0.4, 0, 0.25, 0)
-mainFrame.Size = UDim2.new(0, 240, 0, 300)
+mainFrame.Position = UDim2.new(0.4, 0, 0.2, 0) -- légèrement remonté
+mainFrame.Size = UDim2.new(0, 240, 0, 340) -- agrandi
 mainFrame.Active = true
 mainFrame.Draggable = true
 
@@ -116,7 +113,7 @@ local closeCorner = Instance.new("UICorner")
 closeCorner.CornerRadius = UDim.new(0, 8)
 closeCorner.Parent = closeButton
 
--- Boutons
+-- Fonction création bouton
 local function createButton(name, text, posY, color)
     local btn = Instance.new("TextButton")
     btn.Name = name
@@ -134,11 +131,12 @@ local function createButton(name, text, posY, color)
     return btn
 end
 
-local flyButton   = createButton("FlyButton",   "FLY ON",          0.22, Color3.fromRGB(0, 170, 0))
-local ijButton    = createButton("IJButton",    "INFINITE JUMP ON",0.37, Color3.fromRGB(0, 120, 255))
-local jdButton    = createButton("JohnDoeButton","JOHN DOE",       0.52, Color3.fromRGB(139, 0, 139))
-local r6Button    = createButton("R6Button",    "R6",              0.67, Color3.fromRGB(255, 140, 0))
-local noclipButton= createButton("NoclipButton","NOCLIP ON",       0.82, Color3.fromRGB(0, 200, 100))
+local flyButton    = createButton("FlyButton",    "FLY ON",           0.20, Color3.fromRGB(0, 170, 0))
+local ijButton     = createButton("IJButton",     "INFINITE JUMP ON", 0.33, Color3.fromRGB(0, 120, 255))
+local jdButton     = createButton("JohnDoeButton","JOHN DOE",          0.46, Color3.fromRGB(139, 0, 139))
+local r6Button     = createButton("R6Button",     "R6",               0.59, Color3.fromRGB(255, 140, 0))
+local noclipButton = createButton("NoclipButton","NOCLIP ON",         0.72, Color3.fromRGB(0, 200, 100))
+local invisButton  = createButton("InvisButton",  "INVISIBLE ON",     0.85, Color3.fromRGB(100, 100, 255))
 
 -- Variables
 local flyLoaded = false
@@ -146,6 +144,7 @@ local ijEnabled = false
 local ijConnection = nil
 local noclipEnabled = false
 local noclipConnection = nil
+local invisEnabled = false
 local character = player.Character or player.CharacterAdded:Wait()
 
 -- Rainbow Effect
@@ -226,6 +225,36 @@ local function toggleNoclip(enable)
     end
 end
 
+-- Invisible
+local function toggleInvisible(enable)
+    invisEnabled = enable
+    pcall(function()
+        if enable then
+            loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invisible-87066"))()
+            invisButton.Text = "INVISIBLE OFF"
+            invisButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+        else
+            -- Tentative de désactiver l'invisibilité
+            if character then
+                for _, v in pairs(character:GetDescendants()) do
+                    if v:IsA("BasePart") and v.Name ~= "HumanoidRootPart" then
+                        v.Transparency = 0
+                    elseif v:IsA("Decal") then
+                        v.Transparency = 0
+                    end
+                end
+                local humanoid = character:FindFirstChild("Humanoid")
+                if humanoid then
+                    humanoid:ChangeState(Enum.HumanoidStateType.Running)
+                end
+            end
+            invisButton.Text = "INVISIBLE ON"
+            invisButton.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+        end
+    end)
+end
+
+-- Autres fonctions
 local function activateJohnDoe()
     pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-John-Doe-131661"))() end)
 end
@@ -238,12 +267,10 @@ end
 flyButton.MouseButton1Click:Connect(function()
     local isOn = flyButton.Text == "FLY ON"
     if isOn then
-        flyButton.Text = "FLY OFF"
-        flyButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+        flyButton.Text = "FLY OFF"; flyButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
         toggleFly(true)
     else
-        flyButton.Text = "FLY ON"
-        flyButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+        flyButton.Text = "FLY ON"; flyButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
         toggleFly(false)
     end
 end)
@@ -252,6 +279,7 @@ ijButton.MouseButton1Click:Connect(function() toggleInfiniteJump(not ijEnabled) 
 jdButton.MouseButton1Click:Connect(activateJohnDoe)
 r6Button.MouseButton1Click:Connect(activateR6)
 noclipButton.MouseButton1Click:Connect(function() toggleNoclip(not noclipEnabled) end)
+invisButton.MouseButton1Click:Connect(function() toggleInvisible(not invisEnabled) end)
 
 player.CharacterAdded:Connect(function(new) character = new end)
 
@@ -263,4 +291,4 @@ end)
 
 task.spawn(rainbowEffect)
 
-print("✅ Panel complet avec loading stylé chargé !")
+print("✅ Panel avec Invisible ON/OFF chargé !")
