@@ -1,4 +1,4 @@
--- Rainbow Fly Panel + Infinite Jump - Delta Executor
+-- Rainbow Fly Panel + Infinite Jump + John Doe + R6 - Delta Executor
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
@@ -15,7 +15,7 @@ mainFrame.Parent = screenGui
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 mainFrame.BorderSizePixel = 0
 mainFrame.Position = UDim2.new(0.4, 0, 0.3, 0)
-mainFrame.Size = UDim2.new(0, 240, 0, 160)  -- un peu plus grand
+mainFrame.Size = UDim2.new(0, 240, 0, 240)  -- agrandi pour le nouveau bouton
 mainFrame.Active = true
 mainFrame.Draggable = true
 
@@ -51,12 +51,12 @@ local closeCorner = Instance.new("UICorner")
 closeCorner.CornerRadius = UDim.new(0, 8)
 closeCorner.Parent = closeButton
 
--- Bouton Fly ON/OFF
+-- Bouton Fly
 local flyButton = Instance.new("TextButton")
 flyButton.Name = "FlyButton"
 flyButton.Parent = mainFrame
 flyButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-flyButton.Position = UDim2.new(0.1, 0, 0.35, 0)
+flyButton.Position = UDim2.new(0.1, 0, 0.28, 0)
 flyButton.Size = UDim2.new(0.8, 0, 0, 45)
 flyButton.Font = Enum.Font.GothamSemibold
 flyButton.Text = "FLY ON"
@@ -72,7 +72,7 @@ local ijButton = Instance.new("TextButton")
 ijButton.Name = "IJButton"
 ijButton.Parent = mainFrame
 ijButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
-ijButton.Position = UDim2.new(0.1, 0, 0.68, 0)
+ijButton.Position = UDim2.new(0.1, 0, 0.48, 0)
 ijButton.Size = UDim2.new(0.8, 0, 0, 40)
 ijButton.Font = Enum.Font.GothamSemibold
 ijButton.Text = "INFINITE JUMP ON"
@@ -83,9 +83,40 @@ local ijCorner = Instance.new("UICorner")
 ijCorner.CornerRadius = UDim.new(0, 10)
 ijCorner.Parent = ijButton
 
+-- Bouton John Doe
+local jdButton = Instance.new("TextButton")
+jdButton.Name = "JohnDoeButton"
+jdButton.Parent = mainFrame
+jdButton.BackgroundColor3 = Color3.fromRGB(139, 0, 139)
+jdButton.Position = UDim2.new(0.1, 0, 0.68, 0)
+jdButton.Size = UDim2.new(0.8, 0, 0, 40)
+jdButton.Font = Enum.Font.GothamSemibold
+jdButton.Text = "JOHN DOE"
+jdButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+jdButton.TextScaled = true
+
+local jdCorner = Instance.new("UICorner")
+jdCorner.CornerRadius = UDim.new(0, 10)
+jdCorner.Parent = jdButton
+
+-- Bouton R6
+local r6Button = Instance.new("TextButton")
+r6Button.Name = "R6Button"
+r6Button.Parent = mainFrame
+r6Button.BackgroundColor3 = Color3.fromRGB(255, 140, 0)  -- orange
+r6Button.Position = UDim2.new(0.1, 0, 0.88, 0)
+r6Button.Size = UDim2.new(0.8, 0, 0, 40)
+r6Button.Font = Enum.Font.GothamSemibold
+r6Button.Text = "R6"
+r6Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+r6Button.TextScaled = true
+
+local r6Corner = Instance.new("UICorner")
+r6Corner.CornerRadius = UDim.new(0, 10)
+r6Corner.Parent = r6Button
+
 -- Variables
 local flyLoaded = false
-local flyGui = nil
 local ijEnabled = false
 local ijConnection = nil
 
@@ -102,34 +133,21 @@ local function rainbowEffect()
     end
 end
 
--- Charger le Fly Script une seule fois
+-- Fly functions
 local function loadFly()
     if flyLoaded then return end
     flyLoaded = true
     pcall(function()
-        flyGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
     end)
 end
 
--- Activer/Désactiver Fly (on simule le toggle du script original)
 local function toggleFly(on)
     if not flyLoaded then loadFly() end
     pcall(function()
         local char = player.Character
-        if not char then return end
-        local hum = char:FindFirstChildOfClass("Humanoid")
-        if not hum then return end
-
-        if on then
-            -- Active le vol (simule le bouton "onof")
-            hum.PlatformStand = true
-            -- Le script original utilise la variable "nowe", mais on force l'état
-        else
-            hum.PlatformStand = false
-            -- Réactive les états normaux
-            hum:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
-            hum:SetStateEnabled(Enum.HumanoidStateType.Freefall, true)
-            hum:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
+        if char and char:FindFirstChildOfClass("Humanoid") then
+            char.Humanoid.PlatformStand = on
         end
     end)
 end
@@ -160,10 +178,25 @@ local function toggleInfiniteJump(enable)
     end
 end
 
--- Toggle Fly
+-- John Doe
+local function activateJohnDoe()
+    pcall(function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-John-Doe-131661"))()
+    end)
+end
+
+-- R6 (le script que tu as fourni)
+local function activateR6()
+    pcall(function()
+        loadstring(game:HttpGet(('https://pastebin.com/raw/jHGVauVX'), true))()
+        print("✅ R6 activé !")
+    end)
+end
+
+-- Connexions
 flyButton.MouseButton1Click:Connect(function()
-    local flying = flyButton.Text == "FLY ON"
-    if flying then
+    local isOn = flyButton.Text == "FLY ON"
+    if isOn then
         flyButton.Text = "FLY OFF"
         flyButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
         toggleFly(true)
@@ -174,9 +207,18 @@ flyButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- Toggle Infinite Jump
 ijButton.MouseButton1Click:Connect(function()
     toggleInfiniteJump(not ijEnabled)
+end)
+
+jdButton.MouseButton1Click:Connect(activateJohnDoe)
+
+r6Button.MouseButton1Click:Connect(function()
+    activateR6()
+    r6Button.Text = "R6 ✓"
+    task.delay(1.5, function()
+        if r6Button and r6Button.Parent then r6Button.Text = "R6" end
+    end)
 end)
 
 -- Fermer panel
@@ -191,8 +233,8 @@ task.spawn(rainbowEffect)
 -- Notification
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Rainbow Fly Panel",
-    Text = "Panel chargé ! Fly + Infinite Jump",
+    Text = "R6 ajouté !",
     Duration = 5
 })
 
-print("✅ Rainbow Fly Panel + Infinite Jump chargé !")
+print("✅ Panel complet avec R6 chargé !")
