@@ -1,4 +1,4 @@
--- Petit Panel Multicolore + Fly Toggle - Pour Delta Executor
+-- Petit Panel Multicolore + Fly Toggle + Bouton Fermer - Delta Executor
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
@@ -8,7 +8,7 @@ screenGui.Name = "RainbowFlyPanel"
 screenGui.Parent = playerGui
 screenGui.ResetOnSpawn = false
 
--- Frame principale (petit panel)
+-- Frame principale
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
 mainFrame.Parent = screenGui
@@ -19,7 +19,6 @@ mainFrame.Size = UDim2.new(0, 220, 0, 120)
 mainFrame.Active = true
 mainFrame.Draggable = true
 
--- Coin arrondi
 local uiCorner = Instance.new("UICorner")
 uiCorner.CornerRadius = UDim.new(0, 12)
 uiCorner.Parent = mainFrame
@@ -35,6 +34,22 @@ title.Text = "🌈 Fly Panel"
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.TextScaled = true
 title.TextStrokeTransparency = 0.7
+
+-- Bouton Fermer (X rouge)
+local closeButton = Instance.new("TextButton")
+closeButton.Name = "CloseButton"
+closeButton.Parent = mainFrame
+closeButton.BackgroundColor3 = Color3.fromRGB(220, 20, 20)
+closeButton.Position = UDim2.new(1, -30, 0, 5)
+closeButton.Size = UDim2.new(0, 25, 0, 25)
+closeButton.Font = Enum.Font.GothamBold
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.TextScaled = true
+
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(0, 8)
+closeCorner.Parent = closeButton
 
 -- Bouton Fly ON/OFF
 local flyButton = Instance.new("TextButton")
@@ -56,7 +71,7 @@ buttonCorner.Parent = flyButton
 local flyLoaded = false
 local flyScript = nil
 
--- Fonction rainbow (animation de couleurs)
+-- Fonction rainbow
 local function rainbowEffect()
     while mainFrame.Parent do
         for i = 0, 1, 0.01 do
@@ -69,7 +84,7 @@ local function rainbowEffect()
     end
 end
 
--- Charger le script Fly (de ton lien)
+-- Charger le script Fly
 local function loadFly()
     if flyLoaded then return end
     flyLoaded = true
@@ -89,26 +104,27 @@ flyButton.MouseButton1Click:Connect(function()
     end
     
     flying = not flying
-    
     if flying then
         flyButton.Text = "FLY OFF"
         flyButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-        -- Le script Fly V3 gère déjà son propre toggle interne via son bouton "fly"
-        -- Si besoin d'activer directement, on peut simuler, mais le load suffit généralement
     else
         flyButton.Text = "FLY ON"
         flyButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-        -- Le script Fly V3 a son propre système de toggle
     end
 end)
 
--- Lancer l'effet rainbow
+-- Bouton Fermer
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
+
+-- Lancer rainbow
 task.spawn(rainbowEffect)
 
 -- Notification
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Rainbow Fly Panel",
-    Text = "Panel chargé ! Clique sur FLY pour activer.",
+    Text = "Panel chargé ! Clique sur FLY ou X pour fermer.",
     Duration = 5
 })
 
