@@ -1,11 +1,11 @@
--- A3K🔑 Key System (Delta Executor)
+-- A3K🔑 Key System + Auto Execute (Delta Executor)
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
 -- Configuration
 local CORRECT_KEY = "Free-30849"
 local DISCORD_LINK = "https://discord.gg/gZWVVKSwp"
-local SCRIPT_URL = "https://raw.githubusercontent.com/louisantho0969-max/DASRI-P/refs/heads/main/DASRI-P"
+local SCRIPT_URL = "https://raw.githubusercontent.com/LynX99-9/komtolmmek2script/refs/heads/main/CyraaHub.lua"
 
 -- ScreenGui
 local screenGui = Instance.new("ScreenGui")
@@ -152,7 +152,7 @@ end
 addHover(getKeyBtn, Color3.fromRGB(60, 50, 140), Color3.fromRGB(80, 70, 180))
 addHover(submitBtn, Color3.fromRGB(0, 160, 90), Color3.fromRGB(0, 190, 110))
 
--- Bouton GET KEY
+-- Bouton GET KEY → met le lien Discord dans la barre
 getKeyBtn.MouseButton1Click:Connect(function()
     keyBox.Text = DISCORD_LINK
     statusLabel.Text = "Lien Discord copié dans la barre !"
@@ -161,15 +161,18 @@ end)
 
 -- Bouton SUBMIT
 submitBtn.MouseButton1Click:Connect(function()
-    local enteredKey = keyBox.Text:gsub("%s+", "")
+    local enteredKey = keyBox.Text:gsub("%s+", "") -- enlever les espaces
 
     if enteredKey == CORRECT_KEY then
         statusLabel.Text = "✅ Clé correcte ! Chargement..."
         statusLabel.TextColor3 = Color3.fromRGB(80, 255, 120)
 
         task.wait(0.8)
+
+        -- Détruire le panel
         screenGui:Destroy()
 
+        -- Exécuter le nouveau script
         pcall(function()
             loadstring(game:HttpGet(SCRIPT_URL))()
         end)
@@ -177,13 +180,14 @@ submitBtn.MouseButton1Click:Connect(function()
         statusLabel.Text = "❌ Clé incorrecte !"
         statusLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
 
+        -- Animation d'erreur
         keyBox.BackgroundColor3 = Color3.fromRGB(60, 20, 20)
         task.wait(0.4)
         keyBox.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
     end
 end)
 
--- Effet rainbow
+-- Effet rainbow sur le contour
 task.spawn(function()
     while mainFrame.Parent do
         for i = 0, 1, 0.02 do
@@ -194,4 +198,4 @@ task.spawn(function()
     end
 end)
 
-print("✅ A3K🔑 Key System chargé !")
+print("✅ A3K🔑 Key System chargé ! Clé : Free-30849")
