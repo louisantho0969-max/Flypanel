@@ -1,294 +1,197 @@
--- Rainbow Fly Panel + Loading Stylé + Invisible - Version Complète
+-- A3K🔑 Key System (Delta Executor)
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- ==================== CHARGEMENT STYLÉ ====================
-local loadingGui = Instance.new("ScreenGui")
-loadingGui.Name = "StylishLoader"
-loadingGui.Parent = playerGui
-loadingGui.ResetOnSpawn = false
+-- Configuration
+local CORRECT_KEY = "Free-30849"
+local DISCORD_LINK = "https://discord.gg/gZWVVKSwp"
+local SCRIPT_URL = "https://raw.githubusercontent.com/louisantho0969-max/DASRI-P/refs/heads/main/DASRI-P"
 
-local loadingFrame = Instance.new("Frame")
-loadingFrame.Name = "LoadingFrame"
-loadingFrame.Parent = loadingGui
-loadingFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-loadingFrame.Size = UDim2.new(0, 320, 0, 180)
-loadingFrame.Position = UDim2.new(0.5, -160, 0.5, -90)
-
-local loadingCorner = Instance.new("UICorner")
-loadingCorner.CornerRadius = UDim.new(0, 20)
-loadingCorner.Parent = loadingFrame
-
-local icon = Instance.new("ImageLabel")
-icon.Name = "Icon"
-icon.Parent = loadingFrame
-icon.BackgroundTransparency = 1
-icon.Size = UDim2.new(0, 80, 0, 80)
-icon.Position = UDim2.new(0.5, -40, 0.2, 0)
-icon.Image = "rbxassetid://3926305904" 
-icon.ImageColor3 = Color3.fromRGB(0, 255, 200)
-
-local iconCorner = Instance.new("UICorner")
-iconCorner.CornerRadius = UDim.new(0, 16)
-iconCorner.Parent = icon
-
-local loadingText = Instance.new("TextLabel")
-loadingText.Name = "LoadingText"
-loadingText.Parent = loadingFrame
-loadingText.BackgroundTransparency = 1
-loadingText.Size = UDim2.new(1, 0, 0, 40)
-loadingText.Position = UDim2.new(0, 0, 0.65, 0)
-loadingText.Font = Enum.Font.GothamBold
-loadingText.Text = "CHARGEMENT..."
-loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
-loadingText.TextScaled = true
-
-task.spawn(function()
-    while loadingGui.Parent do
-        icon.Rotation = icon.Rotation + 8
-        task.wait(0.03)
-    end
-end)
-
-local function loadingRainbow()
-    for i = 0, 1, 0.015 do
-        local color = Color3.fromHSV(i, 1, 1)
-        loadingFrame.BorderColor3 = color
-        icon.ImageColor3 = color
-        loadingText.TextColor3 = color
-        task.wait(0.04)
-    end
-end
-task.spawn(loadingRainbow)
-
-task.wait(3)
-loadingFrame:TweenSizeAndPosition(UDim2.new(0,0,0,0), UDim2.new(0.5,0,0.5,0), Enum.EasingDirection.Out, Enum.EasingStyle.Quint, 0.6, true)
-task.wait(0.7)
-loadingGui:Destroy()
-
--- ==================== PANEL PRINCIPAL ====================
+-- ScreenGui
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "RainbowFlyPanel"
+screenGui.Name = "A3KKeySystem"
 screenGui.Parent = playerGui
 screenGui.ResetOnSpawn = false
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
+-- Fond semi-transparent
+local background = Instance.new("Frame")
+background.Name = "Background"
+background.Parent = screenGui
+background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+background.BackgroundTransparency = 0.4
+background.Size = UDim2.new(1, 0, 1, 0)
+background.BorderSizePixel = 0
+
+-- Frame principale
 local mainFrame = Instance.new("Frame")
 mainFrame.Name = "MainFrame"
 mainFrame.Parent = screenGui
-mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
 mainFrame.BorderSizePixel = 0
-mainFrame.Position = UDim2.new(0.4, 0, 0.2, 0) -- légèrement remonté
-mainFrame.Size = UDim2.new(0, 240, 0, 340) -- agrandi
+mainFrame.Position = UDim2.new(0.5, -160, 0.5, -110)
+mainFrame.Size = UDim2.new(0, 320, 0, 220)
 mainFrame.Active = true
 mainFrame.Draggable = true
 
-local uiCorner = Instance.new("UICorner")
-uiCorner.CornerRadius = UDim.new(0, 12)
-uiCorner.Parent = mainFrame
+local mainCorner = Instance.new("UICorner")
+mainCorner.CornerRadius = UDim.new(0, 14)
+mainCorner.Parent = mainFrame
+
+local mainStroke = Instance.new("UIStroke")
+mainStroke.Color = Color3.fromRGB(100, 70, 255)
+mainStroke.Thickness = 1.5
+mainStroke.Transparency = 0.3
+mainStroke.Parent = mainFrame
 
 -- Titre
 local title = Instance.new("TextLabel")
 title.Name = "Title"
 title.Parent = mainFrame
 title.BackgroundTransparency = 1
-title.Size = UDim2.new(1, 0, 0, 40)
+title.Position = UDim2.new(0, 0, 0, 15)
+title.Size = UDim2.new(1, 0, 0, 30)
 title.Font = Enum.Font.GothamBold
-title.Text = "🌈 Fly Panel"
+title.Text = "A3K🔑"
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.TextScaled = true
+title.TextSize = 22
 
--- Bouton Fermer
-local closeButton = Instance.new("TextButton")
-closeButton.Name = "CloseButton"
-closeButton.Parent = mainFrame
-closeButton.BackgroundColor3 = Color3.fromRGB(220, 20, 20)
-closeButton.Position = UDim2.new(1, -30, 0, 5)
-closeButton.Size = UDim2.new(0, 25, 0, 25)
-closeButton.Font = Enum.Font.GothamBold
-closeButton.Text = "X"
-closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeButton.TextScaled = true
+-- Sous-titre
+local subtitle = Instance.new("TextLabel")
+subtitle.Name = "Subtitle"
+subtitle.Parent = mainFrame
+subtitle.BackgroundTransparency = 1
+subtitle.Position = UDim2.new(0, 0, 0, 45)
+subtitle.Size = UDim2.new(1, 0, 0, 20)
+subtitle.Font = Enum.Font.Gotham
+subtitle.Text = "Entrez la clé pour continuer"
+subtitle.TextColor3 = Color3.fromRGB(160, 160, 180)
+subtitle.TextSize = 13
 
-local closeCorner = Instance.new("UICorner")
-closeCorner.CornerRadius = UDim.new(0, 8)
-closeCorner.Parent = closeButton
+-- TextBox pour la key
+local keyBox = Instance.new("TextBox")
+keyBox.Name = "KeyBox"
+keyBox.Parent = mainFrame
+keyBox.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
+keyBox.Position = UDim2.new(0.1, 0, 0.42, 0)
+keyBox.Size = UDim2.new(0.8, 0, 0, 40)
+keyBox.Font = Enum.Font.Gotham
+keyBox.PlaceholderText = "Entrez votre clé ici..."
+keyBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 140)
+keyBox.Text = ""
+keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyBox.TextSize = 14
+keyBox.ClearTextOnFocus = false
+keyBox.TextXAlignment = Enum.TextXAlignment.Center
 
--- Fonction création bouton
-local function createButton(name, text, posY, color)
-    local btn = Instance.new("TextButton")
-    btn.Name = name
-    btn.Parent = mainFrame
-    btn.BackgroundColor3 = color
-    btn.Position = UDim2.new(0.1, 0, posY, 0)
-    btn.Size = UDim2.new(0.8, 0, 0, 40)
-    btn.Font = Enum.Font.GothamSemibold
-    btn.Text = text
-    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    btn.TextScaled = true
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 10)
-    corner.Parent = btn
-    return btn
+local keyCorner = Instance.new("UICorner")
+keyCorner.CornerRadius = UDim.new(0, 8)
+keyCorner.Parent = keyBox
+
+local keyStroke = Instance.new("UIStroke")
+keyStroke.Color = Color3.fromRGB(80, 60, 160)
+keyStroke.Thickness = 1
+keyStroke.Parent = keyBox
+
+-- Bouton Get Key
+local getKeyBtn = Instance.new("TextButton")
+getKeyBtn.Name = "GetKeyBtn"
+getKeyBtn.Parent = mainFrame
+getKeyBtn.BackgroundColor3 = Color3.fromRGB(60, 50, 140)
+getKeyBtn.Position = UDim2.new(0.1, 0, 0.68, 0)
+getKeyBtn.Size = UDim2.new(0.38, 0, 0, 38)
+getKeyBtn.Font = Enum.Font.GothamSemibold
+getKeyBtn.Text = "GET KEY"
+getKeyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+getKeyBtn.TextSize = 14
+getKeyBtn.AutoButtonColor = false
+
+local getKeyCorner = Instance.new("UICorner")
+getKeyCorner.CornerRadius = UDim.new(0, 8)
+getKeyCorner.Parent = getKeyBtn
+
+-- Bouton Submit
+local submitBtn = Instance.new("TextButton")
+submitBtn.Name = "SubmitBtn"
+submitBtn.Parent = mainFrame
+submitBtn.BackgroundColor3 = Color3.fromRGB(0, 160, 90)
+submitBtn.Position = UDim2.new(0.52, 0, 0.68, 0)
+submitBtn.Size = UDim2.new(0.38, 0, 0, 38)
+submitBtn.Font = Enum.Font.GothamSemibold
+submitBtn.Text = "SUBMIT"
+submitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+submitBtn.TextSize = 14
+submitBtn.AutoButtonColor = false
+
+local submitCorner = Instance.new("UICorner")
+submitCorner.CornerRadius = UDim.new(0, 8)
+submitCorner.Parent = submitBtn
+
+-- Message d'erreur / succès
+local statusLabel = Instance.new("TextLabel")
+statusLabel.Name = "Status"
+statusLabel.Parent = mainFrame
+statusLabel.BackgroundTransparency = 1
+statusLabel.Position = UDim2.new(0, 0, 0.88, 0)
+statusLabel.Size = UDim2.new(1, 0, 0, 20)
+statusLabel.Font = Enum.Font.Gotham
+statusLabel.Text = ""
+statusLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+statusLabel.TextSize = 12
+
+-- Effet hover
+local function addHover(btn, normalColor, hoverColor)
+    btn.MouseEnter:Connect(function()
+        btn.BackgroundColor3 = hoverColor
+    end)
+    btn.MouseLeave:Connect(function()
+        btn.BackgroundColor3 = normalColor
+    end)
 end
 
-local flyButton    = createButton("FlyButton",    "FLY ON",           0.20, Color3.fromRGB(0, 170, 0))
-local ijButton     = createButton("IJButton",     "INFINITE JUMP ON", 0.33, Color3.fromRGB(0, 120, 255))
-local jdButton     = createButton("JohnDoeButton","JOHN DOE",          0.46, Color3.fromRGB(139, 0, 139))
-local r6Button     = createButton("R6Button",     "R6",               0.59, Color3.fromRGB(255, 140, 0))
-local noclipButton = createButton("NoclipButton","NOCLIP ON",         0.72, Color3.fromRGB(0, 200, 100))
-local invisButton  = createButton("InvisButton",  "INVISIBLE ON",     0.85, Color3.fromRGB(100, 100, 255))
+addHover(getKeyBtn, Color3.fromRGB(60, 50, 140), Color3.fromRGB(80, 70, 180))
+addHover(submitBtn, Color3.fromRGB(0, 160, 90), Color3.fromRGB(0, 190, 110))
 
--- Variables
-local flyLoaded = false
-local ijEnabled = false
-local ijConnection = nil
-local noclipEnabled = false
-local noclipConnection = nil
-local invisEnabled = false
-local character = player.Character or player.CharacterAdded:Wait()
+-- Bouton GET KEY
+getKeyBtn.MouseButton1Click:Connect(function()
+    keyBox.Text = DISCORD_LINK
+    statusLabel.Text = "Lien Discord copié dans la barre !"
+    statusLabel.TextColor3 = Color3.fromRGB(100, 200, 255)
+end)
 
--- Rainbow Effect
-local function rainbowEffect()
+-- Bouton SUBMIT
+submitBtn.MouseButton1Click:Connect(function()
+    local enteredKey = keyBox.Text:gsub("%s+", "")
+
+    if enteredKey == CORRECT_KEY then
+        statusLabel.Text = "✅ Clé correcte ! Chargement..."
+        statusLabel.TextColor3 = Color3.fromRGB(80, 255, 120)
+
+        task.wait(0.8)
+        screenGui:Destroy()
+
+        pcall(function()
+            loadstring(game:HttpGet(SCRIPT_URL))()
+        end)
+    else
+        statusLabel.Text = "❌ Clé incorrecte !"
+        statusLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+
+        keyBox.BackgroundColor3 = Color3.fromRGB(60, 20, 20)
+        task.wait(0.4)
+        keyBox.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
+    end
+end)
+
+-- Effet rainbow
+task.spawn(function()
     while mainFrame.Parent do
-        for i = 0, 1, 0.01 do
+        for i = 0, 1, 0.02 do
             if not mainFrame.Parent then break end
-            local color = Color3.fromHSV(i, 1, 1)
-            mainFrame.BorderColor3 = color
-            title.TextColor3 = color
-            task.wait(0.03)
+            mainStroke.Color = Color3.fromHSV(i, 0.8, 1)
+            task.wait(0.04)
         end
-    end
-end
-
--- Fly
-local function loadFly()
-    if flyLoaded then return end
-    flyLoaded = true
-    pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
-    end)
-end
-
-local function toggleFly(on)
-    if not flyLoaded then loadFly() end
-    pcall(function()
-        if character and character:FindFirstChild("Humanoid") then
-            character.Humanoid.PlatformStand = on
-        end
-    end)
-end
-
--- Infinite Jump
-local function toggleInfiniteJump(enable)
-    ijEnabled = enable
-    if enable then
-        if not ijConnection then
-            ijConnection = game:GetService("UserInputService").JumpRequest:Connect(function()
-                if ijEnabled and player.Character and player.Character:FindFirstChild("Humanoid") then
-                    player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-                end
-            end)
-        end
-        ijButton.Text = "INFINITE JUMP OFF"
-        ijButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-    else
-        if ijConnection then ijConnection:Disconnect() ijConnection = nil end
-        ijButton.Text = "INFINITE JUMP ON"
-        ijButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
-    end
-end
-
--- Noclip
-local function toggleNoclip(enable)
-    noclipEnabled = enable
-    if enable then
-        if not noclipConnection then
-            noclipConnection = game:GetService("RunService").Stepped:Connect(function()
-                if noclipEnabled and character then
-                    for _, v in pairs(character:GetDescendants()) do
-                        if v:IsA("BasePart") then v.CanCollide = false end
-                    end
-                end
-            end)
-        end
-        noclipButton.Text = "NOCLIP OFF"
-        noclipButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-    else
-        if noclipConnection then noclipConnection:Disconnect() noclipConnection = nil end
-        if character then
-            for _, v in pairs(character:GetDescendants()) do
-                if v:IsA("BasePart") then v.CanCollide = true end
-            end
-        end
-        noclipButton.Text = "NOCLIP ON"
-        noclipButton.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
-    end
-end
-
--- Invisible
-local function toggleInvisible(enable)
-    invisEnabled = enable
-    pcall(function()
-        if enable then
-            loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invisible-87066"))()
-            invisButton.Text = "INVISIBLE OFF"
-            invisButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-        else
-            -- Tentative de désactiver l'invisibilité
-            if character then
-                for _, v in pairs(character:GetDescendants()) do
-                    if v:IsA("BasePart") and v.Name ~= "HumanoidRootPart" then
-                        v.Transparency = 0
-                    elseif v:IsA("Decal") then
-                        v.Transparency = 0
-                    end
-                end
-                local humanoid = character:FindFirstChild("Humanoid")
-                if humanoid then
-                    humanoid:ChangeState(Enum.HumanoidStateType.Running)
-                end
-            end
-            invisButton.Text = "INVISIBLE ON"
-            invisButton.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
-        end
-    end)
-end
-
--- Autres fonctions
-local function activateJohnDoe()
-    pcall(function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-John-Doe-131661"))() end)
-end
-
-local function activateR6()
-    pcall(function() loadstring(game:HttpGet("https://pastebin.com/raw/jHGVauVX", true))() end)
-end
-
--- Connexions
-flyButton.MouseButton1Click:Connect(function()
-    local isOn = flyButton.Text == "FLY ON"
-    if isOn then
-        flyButton.Text = "FLY OFF"; flyButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-        toggleFly(true)
-    else
-        flyButton.Text = "FLY ON"; flyButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-        toggleFly(false)
     end
 end)
 
-ijButton.MouseButton1Click:Connect(function() toggleInfiniteJump(not ijEnabled) end)
-jdButton.MouseButton1Click:Connect(activateJohnDoe)
-r6Button.MouseButton1Click:Connect(activateR6)
-noclipButton.MouseButton1Click:Connect(function() toggleNoclip(not noclipEnabled) end)
-invisButton.MouseButton1Click:Connect(function() toggleInvisible(not invisEnabled) end)
-
-player.CharacterAdded:Connect(function(new) character = new end)
-
-closeButton.MouseButton1Click:Connect(function()
-    if ijConnection then ijConnection:Disconnect() end
-    if noclipConnection then noclipConnection:Disconnect() end
-    screenGui:Destroy()
-end)
-
-task.spawn(rainbowEffect)
-
-print("✅ Panel avec Invisible ON/OFF chargé !")
+print("✅ A3K🔑 Key System chargé !")
